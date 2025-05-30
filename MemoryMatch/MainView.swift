@@ -14,6 +14,7 @@ struct MainView: View {
     @State private var flippedCards: [Int] = []
     @State private var timer: Timer? = nil
     @State private var timeRemaining = 30
+    @State private var showAlert = false
     func startTimer() {
         timer?.invalidate()
         timeRemaining = 30
@@ -22,7 +23,7 @@ struct MainView: View {
                 timeRemaining -= 1
             } else {
                 timer?.invalidate()
-                score = 0
+                showAlert = true
                 print("Time's up! Final score: \(score)")
             }
         }
@@ -81,7 +82,23 @@ struct MainView: View {
                 }
                 
             }
+            Button("Retry") {
+                score = 0
+                cards = MainView.generateCards()
+                startTimer()
+            }
+            .padding()
+            .background(Color.blue)
+            .foregroundColor(.white)
+            .cornerRadius(10)
             Spacer()
+                .alert(isPresented: $showAlert) {
+                    Alert(
+                        title: Text("Time's Up!"),
+                        message: Text("Your final score is \(score)"),
+                        dismissButton: .default(Text("OK"))
+                    )
+                }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .onAppear {
