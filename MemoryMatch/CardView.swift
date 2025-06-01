@@ -11,6 +11,7 @@ struct Card: Identifiable {
     let id = UUID()
     let imageName: String
     var isFlipped: Bool = false
+    var isMatched: Bool = false
 }
 
 struct CardView: View {
